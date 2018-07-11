@@ -1,12 +1,7 @@
 from flask import Blueprint, jsonify
 from app.db import tweet_repository
 
-# TODO: import tweet_repository
-
 api = Blueprint('tweets', __name__)
-
-# TODO: implement the `/tweets/1` parametric route
-
 
 @api.route('/tweets/<int:id>')
 def show(id):

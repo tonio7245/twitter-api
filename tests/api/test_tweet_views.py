@@ -11,13 +11,14 @@ class TestTweetViews(TestCase):
 
     def setUp(self):
         tweet_repository.tweets.clear() # Make sure each test starts with an empty database
+        tweet_repository.next_id = 1
 
     def test_tweet_show(self):
+        tweet_repository.tweets.clear()
         first_tweet = Tweet("First tweet")
         tweet_repository.add(first_tweet)
         response = self.client.get("/api/v1/tweets/1")
         response_tweet = response.json
-        print(response_tweet)
         self.assertEqual(response_tweet["id"], 1)
         self.assertEqual(response_tweet["text"], "First tweet")
         self.assertIsNotNone(response_tweet["created_at"])
