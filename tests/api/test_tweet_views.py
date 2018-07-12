@@ -22,3 +22,19 @@ class TestTweetViews(TestCase):
         self.assertEqual(response_tweet["id"], 1)
         self.assertEqual(response_tweet["text"], "First tweet")
         self.assertIsNotNone(response_tweet["created_at"])
+
+    def test_201_when_creating_tweet(self):
+        tweet_repository.tweets.clear()
+        response = self.client.post('/api/v1/tweets/', data=dict(text='Mon tweet en francais'))
+        self.assertEquals(response.status_code,201)
+        response_tweet = response.json
+        self.assertEqual(response_tweet["text"], "Mon tweet en francais")
+        self.assertIsNotNone(response_tweet["created_at"])
+
+    def test_422_if_empty(self):
+        tweet_repository.tweets.clear()
+        response = self.client.post('/api/v1/tweets/', data=dict(text=''))
+        self.assertEquals(response.status_code,422)
+        response = self.client.post('/api/v1/tweets/')
+        self.assertEquals(response.status_code,422)
+
